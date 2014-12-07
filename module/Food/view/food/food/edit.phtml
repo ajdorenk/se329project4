@@ -22,3 +22,12 @@ echo $this->formRow($form->get('location'));
 echo $this->formRow($form->get('creator'));
 echo $this->formSubmit($form->get('submit'));
 echo $this->form()->closeTag();
+?>
+
+<form action="update_res.asp">
+  Date<input type="text" name="date"><br>
+  Time<input type="text" name="time"><br>
+  Rating<input type="text" name="rating"><br>
+  Attending<input type="text" name="attending"><br>
+  <input type="submit" value="Submit">
+</form>
