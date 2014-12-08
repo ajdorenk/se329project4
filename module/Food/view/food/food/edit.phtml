@@ -22,3 +22,21 @@ echo $this->formRow($form->get('location'));
 echo $this->formRow($form->get('creator'));
 echo $this->formSubmit($form->get('submit'));
 echo $this->form()->closeTag();
+?>
+
+Date<input id="input_date" type="text" name="date"><br>
+Time<input id="input_time" type="text" name="time"><br>
+Rating<input id="input_rating" type="text" name="rating"><br>
+Attending<input id="input_attending" type="text" name="attending"><br>
+<button onclick="editReservation()">Submit</button>
+
+<script>
+function editReservation() {
+    var date = document.getElementById('input_date').value
+	var time = document.getElementById('input_time').value
+	var rating = document.getElementById('input_rating').value
+	var attending = document.getElementById('input_attending').value
+	
+	window.alert(date+" "+time+" "+rating+" "+attending);
+}
+</script>
