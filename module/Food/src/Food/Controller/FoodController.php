@@ -245,5 +245,37 @@ class FoodController extends AbstractActionController
 			'messages' => $this->flashMessenger()->getCurrentMessages(),
 		);
 	}
+	// public function acceptAction()
+	// {
+	// 	$id = (int) $this->params()->fromRoute('id', 0);
+	// 	if (!$id) {
+	// 		return $this->redirect()->toRoute('food', array(
+	// 			'action' => 'add'
+	// 		));
+	// 	}
+	// 	$reservation = $this->getReservationTable()->getReservation($id);
+
+	// 	$form  = new ReservationForm();
+	// 	$form->bind($reservation);
+	// 	$form->get('submit')->setAttribute('value', 'Accept');
+
+	// 	$request = $this->getRequest();
+	// 	if ($request->isPost()) {
+	// 		$form->setInputFilter($reservation->getInputFilter());
+	// 		$form->setData($request->getPost());
+
+	// 		if ($form->isValid()) {
+	// 			$this->getReservationTable()->saveReservation($form->getData());
+
+	// 			// Redirect to list of reservations
+	// 			return $this->redirect()->toRoute('food');
+	// 		}
+	// 	}
+
+	// 	return array(
+	// 		'id' => $id,
+	// 		'form' => $form,
+	// 	);
+	// }
 
 }

@@ -1,3 +1,14 @@
+<?php
+require 'vendor/autoload.php';
+ 
+use Parse\ParseClient;
+use Parse\ParseObject;
+use Parse\ParseQuery;
+ 
+date_default_timezone_set("America/Chicago");
+ParseClient::initialize('nENIzDAZMlkllSuIHYxveprlHNCB07bq2xe15N3I', '1DnWnAPXi8ns7yye0V8eoSoByU1IICEJwOsDRGdf', '201XLpu2clY5Mmkup4IyegdjE3y66JVuiSG7dgBV');
+?>
+
 <style>
 a.button {
     background: transparent url('http://www.oscaralexander.com/tutorials/img/bg_button_a.gif') no-repeat scroll top right;
@@ -45,9 +56,42 @@ $this->headTitle($title);
     <th>&nbsp;</th>
 </tr>
 <?php foreach ($reservations as $reservation) : ?>
+
 <tr>
     <td><?php echo $this->escapeHtml($reservation->title);?></td>
     <td width=50%>
+    <script>
+    $(document).ready(function() {
+<?php echo "$(\"#numRSVPsButton".$reservation->id."\").click(function () {" ?>
+            Parse.initialize("nENIzDAZMlkllSuIHYxveprlHNCB07bq2xe15N3I", "nOa2cTqHev0vi6QpfnuUxac9CAaoMfB4tUWq6jLN");
+            // var Reservation = Parse.Object.extend( <?php echo "\"Res".$reservation->id."\"" ?> );
+            var Reservation = Parse.Object.extend("Reservation");
+            var query = new Parse.Query(Reservation);
+            query.equalTo("resNum", <?php echo $reservation->id ?>);
+            query.find({
+                success: function(results) {
+                    // alert("Successfully retrieved " + results.length + " scores.");
+                    if (results.length > 0) {
+                        var res = results[0];
+                        var numGuests = res.get("numGuests");
+                        if (numGuests == 0) { 
+                            alert("No guests confirmed");
+                        } else if (numGuests == 1) {
+                            alert("1 guest confirmed");
+                        } else {
+                            alert(numGuests + " guests confirmed");
+                        }
+                    } else {
+                        alert("No guests confirmed");
+                    }
+                },
+                error: function(error) {
+                    alert("Error: " + error.code + " " + error.message);
+                }
+            });
+        });
+    });
+    </script>
         <a href="<?php echo $this->url('food',
             array('action'=>'view', 'id' => $reservation->id));?>">View</a>
         <a href="<?php echo $this->url('food',
@@ -56,6 +100,7 @@ $this->headTitle($title);
             array('action'=>'delete', 'id' => $reservation->id));?>">Delete</a>
         <a href="<?php echo $this->url('food',
             array('action'=>'share', 'id' => $reservation->id));?>">Share</a>
+        <button type="button" id="numRSVPsButton<?php echo $reservation->id ?>">View # RSVPs</button> 
     </td>
 </tr>
 <?php endforeach; ?>
@@ -74,9 +119,70 @@ $this->headTitle($title);
 		else
 			continue;
 	?></td>
+    <script>
+        $(document).ready(function() {
+<?php echo "$(\"#acceptButton".$reservation->id."\").click(function () {" ?>
+            // $("#acceptButton").click(function () {
+                Parse.initialize("nENIzDAZMlkllSuIHYxveprlHNCB07bq2xe15N3I", "nOa2cTqHev0vi6QpfnuUxac9CAaoMfB4tUWq6jLN");
+                // var Reservation = Parse.Object.extend( <?php echo "\"Res".$reservation->id."\"" ?> );
+                var Reservation = Parse.Object.extend("Reservation");
+                var query = new Parse.Query(Reservation);
+                query.equalTo("resNum", <?php echo $reservation->id ?>);
+                query.find({
+                    success: function(results) {
+                        // alert("Successfully retrieved " + results.length + " scores.");
+                        if (results.length > 0) {
+                            var res = results[0];
+                            res.set("numGuests", res.get("numGuests")+1);
+                            res.save(null, {});
+                        } else {
+                            var res = new Reservation();
+                            res.set("resNum", <?php echo $reservation->id ?>);
+                            res.set("numGuests", 1);
+                            res.save(null, {});
+                        }
+                        alert("Reservation accepted");
+                    },
+                    error: function(error) {
+                        alert("Error: " + error.code + " " + error.message);
+                    }
+                });
+            });
+<?php echo "$(\"#declineButton".$reservation->id."\").click(function () {" ?>
+                Parse.initialize("nENIzDAZMlkllSuIHYxveprlHNCB07bq2xe15N3I", "nOa2cTqHev0vi6QpfnuUxac9CAaoMfB4tUWq6jLN");
+                // var Reservation = Parse.Object.extend( <?php echo "\"Res".$reservation->id."\"" ?> );
+                var Reservation = Parse.Object.extend("Reservation");
+                var query = new Parse.Query(Reservation);
+                query.equalTo("resNum", <?php echo $reservation->id ?>);
+                query.find({
+                    success: function(results) {
+                        // alert("Successfully retrieved " + results.length + " scores.");
+                        if (results.length > 0) {
+                            var res = results[0];
+                            if(res.get("numGuests") > 0) {
+                                res.set("numGuests", res.get("numGuests")-1);
+                                res.save(null, {});
+                            }
+                        } else {
+                            // var res = new Reservation();
+                            // res.set("resNum", <?php echo $reservation->id ?>);
+                            // res.set("numGuests", 1);
+                            // res.save(null, {});
+                        }
+                        alert("Reservation declined");
+                    },
+                    error: function(error) {
+                        alert("Error: " + error.code + " " + error.message);
+                    }
+                });
+            });
+        });
+    </script>
     <td width=50%>
         <a href="<?php echo $this->url('food',
             array('action'=>'view', 'id' => $reservation->id));?>">View</a>
+        <button type="button" id="acceptButton<?php echo $reservation->id ?>">Accept</button>
+        <button type="button" id="declineButton<?php echo $reservation->id ?>">Decline</button>
     </td>
 </tr>
 <?php endforeach; ?>
