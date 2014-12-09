@@ -33,6 +33,9 @@
                     <div class="nav-collapse collapse">
                         <ul class="nav">
                             <li class="active"><a href="<?php echo $this->url('food') ?>"><?php echo $this->translate('Home') ?></a></li>
+                            <li class="active"><a href="<?php echo $this->url('food', array('action'=>'add'));?>"><?php echo $this->translate('New Reservation') ?></a></li>
+                            <li class="active"><a href="<?php echo $this->url('food', array('action'=>'random'));?>"><?php echo $this->translate('Random Restaurant')?></a></li>
+                            <li class="active"><a href="<?php echo $this->url('food', array('action'=>'Logout'));?>"><?php echo $this->translate('Logout') ?></a></li>
                         </ul>
                     </div><!--/.nav-collapse -->
                 </div>
