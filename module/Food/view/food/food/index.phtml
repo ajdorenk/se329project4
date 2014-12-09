@@ -39,16 +39,10 @@ a.button span {
 
 <?php
 
-$title='Reservations';
+$title='My Reservations';
 $this->headTitle($title);
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
-<p>
-    <a href="<?php echo $this->url('user', array('action'=>'edit'));?>">Edit Profile</a><br />
-    <a href="<?php echo $this->url('food', array('action'=>'random'));?>">Get random restaurant</a><br />
-    <a href="<?php echo $this->url('food', array('action'=>'add'));?>">Add new</a><br />
-    <a href="<?php echo $this->url('food', array('action'=>'logout'));?>">Logout</a>
-</p>
 
 <table class="table">
 <tr>
