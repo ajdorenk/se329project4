@@ -15,6 +15,8 @@ $form->setAttribute('action', $this->url(
 ));
 $form->prepare();
 
+$res_id = $this->id;
+
 echo $this->form()->openTag($form);
 echo $this->formHidden($form->get('id'));
 echo $this->formRow($form->get('title'));
@@ -36,7 +38,31 @@ function editReservation() {
 	var time = document.getElementById('input_time').value
 	var rating = document.getElementById('input_rating').value
 	var attending = document.getElementById('input_attending').value
+	var id = "<?php echo $res_id;?>"
+	window.alert("Writing date: "+date+", time: "+time+", rating: "+
+		rating+", attending: "+attending+", w/ id: "+id);
 	
-	window.alert(date+" "+time+" "+rating+" "+attending);
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+		document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+		}
+	}
+	xmlhttp.open("GET","http://outtoeat.arlenburroughs.com/write_details.php?filename="+id+
+		"&date="+date+
+		"&time="+time+
+		"&rating="+rating+
+		"&attending="+attending,true);
+	xmlhttp.send();
 }
 </script>
