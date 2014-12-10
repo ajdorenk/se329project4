@@ -48,10 +48,13 @@ function readPreviousResInfo($res_id){
 	$time =  strtok("\n");
 	$rating = strtok("\n");
 	$attending = strtok("\n");
-	echo "<script> document.getElementById('input_date').value = \"".$date."\"
-	document.getElementById('input_time').value= \"".$time."\"
-	document.getElementById('input_rating').value= \"".$rating."\"
-	document.getElementById('input_attending').value= \"".$attending."\" </script>";
+	
+	if($pos = strpos($server_output, 'Warning') ==0){
+		echo "<script> document.getElementById('input_date').value = \"".$date."\"
+		document.getElementById('input_time').value= \"".$time."\"
+		document.getElementById('input_rating').value= \"".$rating."\"
+		document.getElementById('input_attending').value= \"".$attending."\" </script>";
+	}
 	curl_close ($ch);
 }
 ?>
@@ -63,8 +66,6 @@ function editReservation() {
 	var rating = document.getElementById('input_rating').value
 	var attending = document.getElementById('input_attending').value
 	var id = "<?php echo $res_id;?>"
-	window.alert("Writing date: "+date+", time: "+time+", rating: "+
-		rating+", attending: "+attending+", w/ id: "+id);
 	
 	var xmlhttp;
 	if (window.XMLHttpRequest)

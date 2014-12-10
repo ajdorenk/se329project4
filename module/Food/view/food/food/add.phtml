@@ -9,9 +9,50 @@ $form = $this->form;
 $form->setAttribute('action', $this->url('food', array('action'=> 'add')));
 $form->prepare();
 
+$res_id = $this->id;
+
 echo $this->form()->openTag($form);
 echo $this->formHidden($form->get('id'));
 echo $this->formRow($form->get('title'));
 echo $this->formRow($form->get('location'));
 echo $this->formSubmit($form->get('submit'));
 echo $this->form()->closeTag();
+?>
+
+Date<input id="input_date" type="text" name="date"><br>
+Time<input id="input_time" type="text" name="time"><br>
+Attending<input id="input_attending" type="text" name="attending"><br>
+<button onclick="editReservation()">Save Details</button>
+
+<script>
+function editReservation() {
+    var date = document.getElementById('input_date').value
+	var time = document.getElementById('input_time').value
+	var rating = "5";
+	var attending = document.getElementById('input_attending').value
+	var id = "<?php echo $res_id;?>"
+	
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	xmlhttp.onreadystatechange=function()
+	  {
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+		document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+		}
+	}
+	xmlhttp.open("GET","http://outtoeat.arlenburroughs.com/write_details.php?filename="+id+
+		"&date="+date+
+		"&time="+time+
+		"&rating="+rating+
+		"&attending="+attending,true);
+	xmlhttp.send();
+}
+</script>
